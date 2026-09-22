@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WEREWOLF LOBBY</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<div class="wrap">
+  <div class="app-header">
+    <div class="brand">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 3C9 3 7 6 7 9c-2 0-4 2-4 5 0 3 2 5 5 5h8c3 0 5-2 5-5 0-3-2-5-4-5 0-3-2-6-5-6z" stroke="#22e0ff" stroke-width="1.4"/><circle cx="9.5" cy="10.5" r="0.9" fill="#22e0ff"/><circle cx="14.5" cy="10.5" r="0.9" fill="#22e0ff"/></svg>
+      WEREWOLF <span class="brand-sub">LOBBY</span>
+    </div>
+    <span class="tag tag-lobby">Đang chờ bắt đầu</span>
+  </div>
+
+  <div class="grid-2">
+    <div class="panel center">
+      <p class="muted" style="margin-bottom:10px; text-transform:uppercase; letter-spacing:0.08em; font-size:0.8rem;">Room Code</p>
+      <div class="room-code" id="room-code-big">----</div>
+      <p class="muted" style="margin-top:14px; margin-bottom:0; font-size:0.82rem;">Đọc mã này cho mọi người vào phòng</p>
+    </div>
+
+    <div class="panel">
+      <h3 class="mt-0">Người chơi (<span id="player-count">0</span>/16)</h3>
+      <div id="player-list"></div>
+    </div>
+  </div>
+
+  <div class="panel" style="margin-top:18px;">
+    <button class="btn-primary" id="start-btn" disabled style="font-family:'Orbitron',sans-serif; letter-spacing:0.08em;">CẦN THÊM NGƯỜI CHƠI</button>
+    <p class="muted center" style="margin-top:12px; margin-bottom:0; font-size:0.82rem;">
+      Bất kỳ ai trong phòng cũng có thể bấm bắt đầu khi đủ tối thiểu 5 người.
+    </p>
+  </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/common.js') }}"></script>
+<script src="{{ url_for('static', filename='js/lobby.js') }}"></script>
+</body>
+</html>

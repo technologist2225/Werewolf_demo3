@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Đang chơi — Ma Sói</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<div class="wrap" style="max-width: 620px;">
+  <div class="app-header">
+    <div class="brand">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 3C9 3 7 6 7 9c-2 0-4 2-4 5 0 3 2 5 5 5h8c3 0 5-2 5-5 0-3-2-5-4-5 0-3-2-6-5-6z" stroke="#22e0ff" stroke-width="1.4"/><circle cx="9.5" cy="10.5" r="0.9" fill="#22e0ff"/><circle cx="14.5" cy="10.5" r="0.9" fill="#22e0ff"/></svg>
+      WEREWOLF <span class="brand-sub" id="room-code-label"></span>
+    </div>
+    <div id="phase-tag"></div>
+  </div>
+
+  <!-- ROLE CARD -->
+  <div class="panel" id="role-panel" style="display:none;">
+    <div class="role-card">
+      <p class="muted mb-0" id="role-side">PHE</p>
+      <div class="role-name" id="role-name">???</div>
+      <p class="role-desc" id="role-desc"></p>
+    </div>
+  </div>
+
+  <div class="panel" id="status-panel" style="display:none;">
+    <p class="center mb-0" id="alive-status"></p>
+  </div>
+
+  <!-- ELECTION -->
+  <div class="panel" id="election-panel" style="display:none;">
+    <h3 class="mt-0">Bầu Trưởng Làng</h3>
+    <p class="muted">Trưởng Làng có lá phiếu tính gấp đôi khi cả làng biểu quyết treo cổ.</p>
+    <div class="countdown-wrap">
+      <div class="countdown-track"><div class="countdown-fill" id="election-countdown-fill" style="width:100%;"></div></div>
+      <div class="countdown-text" id="election-countdown-text"></div>
+    </div>
+    <div class="vote-progress" id="election-progress"></div>
+    <div id="election-area"></div>
+  </div>
+
+  <!-- TRANSITION / REVEAL -->
+  <div class="panel center" id="transition-panel" style="display:none;">
+    <h3 class="mt-0" id="transition-title"></h3>
+    <p class="muted mb-0" id="transition-msg"></p>
+    <div class="countdown-wrap">
+      <div class="countdown-track"><div class="countdown-fill" id="transition-countdown-fill" style="width:100%;"></div></div>
+      <div class="countdown-text" id="transition-countdown-text"></div>
+    </div>
+  </div>
+
+  <!-- NIGHT -->
+  <div class="panel" id="night-panel" style="display:none;">
+    <h3 class="mt-0">Đêm <span id="night-day-num"></span></h3>
+    <div class="night-tracker" id="night-tracker"></div>
+    <div class="countdown-wrap" id="countdown-wrap">
+      <div class="countdown-track"><div class="countdown-fill" id="countdown-fill" style="width:100%;"></div></div>
+      <div class="countdown-text" id="countdown-text"></div>
+    </div>
+
+    <div id="turn-banner"></div>
+
+    <div id="action-panel" style="display:none;">
+      <p id="action-desc" class="muted"></p>
+      <div class="target-list" id="target-list"></div>
+      <div id="witch-actions"></div>
+      <div id="seer-result"></div>
+    </div>
+  </div>
+
+  <!-- DAY -->
+  <div class="panel" id="day-panel" style="display:none;">
+    <h3 class="mt-0">Ngày <span id="day-day-num"></span></h3>
+    <p id="day-result-msg" class="muted"></p>
+    <div class="countdown-wrap">
+      <div class="countdown-track"><div class="countdown-fill" id="day-countdown-fill" style="width:100%;"></div></div>
+      <div class="countdown-text" id="day-countdown-text"></div>
+    </div>
+    <div class="vote-progress" id="vote-progress"></div>
+    <div id="vote-area"></div>
+  </div>
+
+  <!-- END -->
+  <div class="panel center" id="end-panel" style="display:none;">
+    <h3 class="mt-0" id="end-title"></h3>
+    <div class="role-name" id="end-tag"></div>
+    <p id="end-role-reveal" class="muted"></p>
+    <table class="result-table">
+      <thead><tr><th>Người chơi</th><th>Vai trò</th><th>Kết quả</th></tr></thead>
+      <tbody id="result-body"></tbody>
+    </table>
+    <button class="btn-ghost" id="back-to-home-btn" style="margin-top:16px;">Về trang chủ</button>
+  </div>
+
+  <div class="panel" id="roster-panel" style="display:none;">
+    <h3 class="mt-0">Danh sách</h3>
+    <div id="roster-list"></div>
+  </div>
+
+  <div class="panel" id="log-panel" style="display:none;">
+    <h3 class="mt-0">Diễn biến</h3>
+    <div class="chat-feed" id="log-feed"></div>
+  </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/common.js') }}"></script>
+<script src="{{ url_for('static', filename='js/game.js') }}"></script>
+</body>
+</html>

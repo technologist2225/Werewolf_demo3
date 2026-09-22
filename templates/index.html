@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Web Quản Trò Ma Sói</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<div class="wrap">
+  <div class="app-header">
+    <div class="brand">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 3C9 3 7 6 7 9c-2 0-4 2-4 5 0 3 2 5 5 5h8c3 0 5-2 5-5 0-3-2-5-4-5 0-3-2-6-5-6z" stroke="#22e0ff" stroke-width="1.4"/><circle cx="9.5" cy="10.5" r="0.9" fill="#22e0ff"/><circle cx="14.5" cy="10.5" r="0.9" fill="#22e0ff"/></svg>
+      WEREWOLF <span class="brand-sub">WEB</span>
+    </div>
+  </div>
+
+  <div class="hero-illustration">
+    <svg width="180" height="120" viewBox="0 0 180 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="132" cy="28" r="20" fill="#22e0ff" opacity="0.85"/>
+      <circle cx="124" cy="22" r="20" fill="#060810"/>
+      <path d="M20 100 L45 60 L55 78 L68 48 L82 100 Z" fill="#0f1524" stroke="#22e0ff" stroke-width="1" opacity="0.8"/>
+      <path d="M60 100 C60 78 74 66 92 66 C110 66 124 78 124 100 Z" fill="#0a0e18" stroke="#22e0ff" stroke-width="1" opacity="0.8"/>
+      <path d="M78 66 L82 50 L90 64 Z" fill="#0a0e18" stroke="#22e0ff" stroke-width="1" opacity="0.8"/>
+      <path d="M104 66 L108 50 L100 64 Z" fill="#0a0e18" stroke="#22e0ff" stroke-width="1" opacity="0.8"/>
+      <circle cx="85" cy="82" r="2.4" fill="#ff4d5e"/>
+      <circle cx="99" cy="82" r="2.4" fill="#ff4d5e"/>
+    </svg>
+  </div>
+
+  <div class="eyebrow-mark center" style="justify-content:center; width:100%;">
+    Không cần người làm quản trò — web tự điều hành ván chơi
+  </div>
+  <h1 class="center">Đêm nay, ai sẽ là Sói?</h1>
+  <p class="center" style="max-width: 52ch; margin: 0 auto 32px;">
+    Chia vai ngẫu nhiên, tự gọi từng vai dậy đúng thứ tự cổ điển
+    (Bảo Vệ → Sói → Tiên Tri → Phù Thủy), tự tổng hợp phiếu bầu ban ngày.
+    Mọi người chỉ cần nhìn vào điện thoại của chính mình.
+  </p>
+
+  <div class="grid-2">
+    <div class="panel">
+      <h3 class="mt-0">Tạo phòng mới</h3>
+      <p style="margin-bottom: 18px;">Bạn sẽ là người chơi đầu tiên trong bàn, không có đặc quyền gì khác.</p>
+      <label for="host-name">Tên của bạn</label>
+      <input type="text" id="host-name" placeholder="VD: Minh" maxlength="24">
+      <button class="btn-primary" id="create-btn">Tạo phòng chơi mới</button>
+    </div>
+
+    <div class="panel">
+      <h3 class="mt-0">Vào phòng đã có</h3>
+      <p style="margin-bottom: 18px;">Nhập mã phòng bạn bè vừa đọc cho bạn.</p>
+      <label for="join-code">Mã phòng (4 số)</label>
+      <input type="text" id="join-code" placeholder="VD: 4821" maxlength="4" inputmode="numeric">
+      <label for="join-name">Tên của bạn</label>
+      <input type="text" id="join-name" placeholder="VD: Lan" maxlength="24">
+      <button class="btn-leaf" id="join-btn" style="width:100%;">Vào phòng chơi</button>
+    </div>
+  </div>
+
+  <div class="panel" style="margin-top:28px;">
+    <h3 class="mt-0">Web thay quản trò như thế nào</h3>
+    <p>Đủ tối thiểu 5 người, ai trong phòng cũng có thể bấm bắt đầu.</p>
+    <p>Mỗi đêm, web lần lượt gọi Bảo Vệ, rồi Sói, rồi Tiên Tri, rồi Phù Thủy — mỗi vai chỉ thấy nút hành động khi đến đúng lượt của mình, người khác chỉ thấy dòng chữ "đang chờ...".</p>
+    <p class="mb-0">Ban ngày, cả làng tự bỏ phiếu ngay trên máy của mình — đủ phiếu hoặc hết giờ là web tự tổng hợp và công bố kết quả.</p>
+  </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/common.js') }}"></script>
+<script>
+document.getElementById("create-btn").addEventListener("click", async () => {
+  const name = document.getElementById("host-name").value.trim();
+  if (!name) return showToast("Vui lòng nhập tên của bạn!", true);
+  const { ok, data } = await apiPost("/api/create-room", { name });
+  if (!ok || !data.success) return showToast(data.message || "Có lỗi xảy ra", true);
+  setSession(data.room_code, name);
+  window.location.href = "/room";
+});
+
+document.getElementById("join-btn").addEventListener("click", async () => {
+  const room_code = document.getElementById("join-code").value.trim();
+  const name = document.getElementById("join-name").value.trim();
+  if (!room_code || !name) return showToast("Vui lòng nhập đầy đủ mã phòng và tên!", true);
+  const { ok, data } = await apiPost("/api/join-room", { room_code, name });
+  if (!ok || !data.success) return showToast(data.message || "Có lỗi xảy ra", true);
+  setSession(room_code, name);
+  window.location.href = "/room";
+});
+</script>
+</body>
+</html>
